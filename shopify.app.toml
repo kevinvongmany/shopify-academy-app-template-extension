@@ -3,7 +3,7 @@
 client_id = "0905afdd022a0208d7551398ea44f5d6"
 name = "admin-action-app"
 handle = "admin-action-app-17"
-application_url = "https://theatre-propecia-networks-guardian.trycloudflare.com"
+application_url = "https://audio-h-sprint-polyphonic.trycloudflare.com"
 embedded = true
 
 [build]
@@ -26,7 +26,7 @@ api_version = "2025-07"
 scopes = "write_products"
 
 [auth]
-redirect_urls = ["https://theatre-propecia-networks-guardian.trycloudflare.com/auth/callback", "https://theatre-propecia-networks-guardian.trycloudflare.com/auth/shopify/callback", "https://theatre-propecia-networks-guardian.trycloudflare.com/api/auth/callback"]
+redirect_urls = ["https://audio-h-sprint-polyphonic.trycloudflare.com/auth/callback", "https://audio-h-sprint-polyphonic.trycloudflare.com/auth/shopify/callback", "https://audio-h-sprint-polyphonic.trycloudflare.com/api/auth/callback"]
 
 [pos]
 embedded = false
