@@ -10,11 +10,11 @@ import {
 } from "@shopify/ui-extensions-react/admin";
 import { getIssues, updateIssues } from "./utils";
 
-function generateId (allIssues) {
+function generateId(allIssues) {
   return !allIssues?.length ? 0 : allIssues[allIssues.length - 1].id + 1;
 };
 
-function validateForm ({title, description}) {
+function validateForm({ title, description }) {
   return {
     isValid: Boolean(title) && Boolean(description),
     errors: {
@@ -31,41 +31,69 @@ export default reactExtension(TARGET, () => <App />);
 
 function App() {
   //connect with the extension's APIs
-  const { close, data } = useApi(TARGET);
+  const { close, data, intents } = useApi(TARGET);
+  const issueId = intents?.launchUrl
+    ? new URL(intents.launchUrl)?.searchParams.get("issueId")
+    : null;
+  const [loading, setLoading] = useState(issueId ? true : false);
   const [issue, setIssue] = useState({ title: "", description: "" });
   const [allIssues, setAllIssues] = useState([]);
   const [formErrors, setFormErrors] = useState(null);
-  const { title, description } = issue;
+  const { title, description, id } = issue;
+  const isEditing = id !== undefined;
 
   useEffect(() => {
     getIssues(data.selected[0].id).then(issues => setAllIssues(issues || []));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = useCallback(async () => {
-    const {isValid, errors} = validateForm(issue);
+    const { isValid, errors } = validateForm(issue);
     setFormErrors(errors);
 
     if (isValid) {
-      // Commit changes to the database
-      await updateIssues(data.selected[0].id, [
-        ...allIssues,
-        {
-          id: generateId(allIssues),
-          completed: false,
+      const newIssues = [...allIssues];
+      if (isEditing) {
+        // Find the index the issue being edited
+        const editingIssueIndex = newIssues.findIndex(
+          (listIssue) => listIssue.id === issue.id
+        );
+        // Overwrite issue's title and description with the new issue values
+        newIssues[editingIssueIndex] = {
           ...issue,
-        }
-      ]);
+          title,
+          description,
+        };
+      } else {
+        // If the issue is new, generate a new ID and add it to the list
+        newIssues.push({
+          id: generateId(allIssues),
+          title,
+          description,
+          completed: false,
+        });
+      }
+      await updateIssues(data.selected[0].id, newIssues);
       // Close the modal using the 'close' API
       close();
     }
-  }, [issue, data.selected, allIssues, close]);
+  }, [issue, allIssues, isEditing, data.selected, close, title, description]);
+
+  useEffect(() => {
+    if (issueId) {
+      // handle if opened from rendered block extension
+      const editingIssue = allIssues.find(({ id }) => `${id}`=== issueId);
+      if (editingIssue) {
+        setIssue(editingIssue);
+      }
+    }
+  }, [issueId, allIssues]);
 
   return (
     <AdminAction
-      title="Create an issue"
+      title={ isEditing ? "Edit issue" : "Create issue" }
       primaryAction={
-        <Button onPress={onSubmit}>Create</Button>
+        <Button onPress={onSubmit}>{ isEditing ? "Save" : "Create" }</Button>
       }
       secondaryAction={<Button onPress={close}>Cancel</Button>}
     >

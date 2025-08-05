@@ -10,6 +10,7 @@ import {
   ProgressIndicator,
   Select,
   Text,
+  Heading,
   reactExtension,
   useApi,
 } from "@shopify/ui-extensions-react/admin";
@@ -23,7 +24,7 @@ export default reactExtension(TARGET, () => <App />);
 const PAGE_SIZE = 3;
 
 function App() {
-  const { data, i18n } = useApi(TARGET);
+  const { navigation, data, i18n } = useApi(TARGET);
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState([]);
   const [issues, setIssues] = useState([]);
@@ -109,7 +110,11 @@ function App() {
       // Translate the block title with the i18n API, which uses the strings in the locale files
       title={i18n.translate("name")}
     >
-      <Text>Issues</Text>
+      <Heading
+        size="3"
+      >
+        Issues
+      </Heading>
       <Form id={`issues-form`} onSubmit={onSubmit} onReset={onReset}>
         {issues.length ? (
           <>
@@ -152,7 +157,21 @@ function App() {
                           />
                         </Box>
                         <Box inlineSize="25%">
-                          <InlineStack inlineSize="100%" inlineAlignment="end">
+                          <InlineStack 
+                            inlineSize="100%" 
+                            inlineAlignment="end"
+                            gap="base"
+                          >
+                            <Button
+                              variant="tertiary"
+                              onPress={() =>
+                                navigation?.navigate(
+                                  `extension:issue-tracker-action?issueId=${id}`
+                                )
+                              }
+                            >
+                              <Icon name="EditMinor" />
+                            </Button>
                             <Button
                               onPress={() => handleDelete(id)}
                               variant="tertiary"
@@ -167,6 +186,21 @@ function App() {
                 );
               }
             )}
+            <Divider />
+            <Box paddingBlockStart="base">
+              <Button
+                onPress={() => navigation?.navigate(`extension:issue-tracker-action`)}
+              >
+                <InlineStack 
+                  inlineSize="100%"
+                  inlineAlignment="left"
+                  blockAlignment="center"
+                  gap="small">
+                  <Icon name="PlusMinor" />
+                  Add issue
+                </InlineStack>  
+              </Button>
+            </Box>
             <InlineStack
               paddingBlockStart="large"
               blockAlignment="center"
@@ -198,6 +232,18 @@ function App() {
             <Box paddingBlockEnd="large">
               <Text fontWeight="bold">No issues for this product</Text>
             </Box>
+              <Button
+                onPress={() => navigation?.navigate(`extension:issue-tracker-action`)}
+              >
+                <InlineStack 
+                  inlineSize="100%"
+                  inlineAlignment="left"
+                  blockAlignment="center"
+                  gap="small">
+                  <Icon name="PlusMinor" />
+                  Add first issue
+                </InlineStack>  
+              </Button>
           </>
         )}
       </Form>
