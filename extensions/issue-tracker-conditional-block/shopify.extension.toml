@@ -14,8 +14,6 @@ target = "admin.product-details.block.render"
 
 
 # Valid extension targets:
-[extensions.targeting.should_render]
-module = "./src/condition/shouldRender.js"
 
 # Abandoned checkout detail page
 # - admin.abandoned-checkout-details.block.render
