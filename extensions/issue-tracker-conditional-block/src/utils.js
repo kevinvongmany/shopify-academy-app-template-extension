@@ -50,26 +50,6 @@ export async function getIssues(productId) {
   );
 }
 
-export async function getProductVariants(data) {
-  const getProductQuery = `query Product($id: ID!) {
-      product(id: $id) {
-        variants(first: 2) {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-    }`;
-
-  const productData = await makeGraphQLQuery(
-    getProductQuery,
-    { id: data.selected[0].id }
-  );
-  return productData.data.product.variants.edges;
-}
-
 async function makeGraphQLQuery(query, variables) {
   const graphQLQuery = {
     query,
