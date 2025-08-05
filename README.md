@@ -1,3 +1,11 @@
+# Shopify Academy Lesson - Creating an app for Shopify
+## Author's Note
+This repository is a follow-along exercise from [Shopify Academy](https://www.shopifyacademy.com/path/developing-apps-for-shopify/creating-an-app-for-shopify).
+
+This code was built using [bun (v1.2.19)](https://bun.com/) and using [Node (v18.20.8)](https://nodejs.org/en/download) installed via [nvm 1.2.2](https://github.com/nvm-sh/nvm).
+
+The below README is mostly generated from running the steps in [Quick start](#installing-the-template).
+
 # Shopify App Template - Remix
 
 This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using the [Remix](https://remix.run) framework.
@@ -38,6 +46,11 @@ Using pnpm:
 pnpm install
 ```
 
+Using bun:
+```
+bun i
+```
+
 ### Local Development
 
 Using yarn:
@@ -56,6 +69,12 @@ Using pnpm:
 
 ```shell
 pnpm run dev
+```
+
+Using bun:
+
+```shell
+bun run dev
 ```
 
 Press P to open the URL to your app. Once you click install, you can start development.
