@@ -34,15 +34,18 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  
+  const [shouldRender, setShouldRender] = useState(false);  
 
   useEffect(() => {
     (async function getProductInfo() {
-      // Load the product's metafield of type issues
       const productData = await getIssues(productId);
 
       setLoading(false);
+      
+      if (productData?.data?.product?.variants?.edges.length > 1) {
+        setShouldRender(true);
+      }
+
       if (productData?.data?.product?.metafield?.value) {
         const parsedIssues = JSON.parse(
           productData.data.product.metafield.value
@@ -104,15 +107,12 @@ function App() {
 
   const onReset = () => { };
 
-  return loading ? (
+  const blockMarkup = loading ? (
     <InlineStack blockAlignment='center' inlineAlignment='center'>
       <ProgressIndicator size="large-100" />
     </InlineStack>
   ) : (
-    <AdminBlock
-      // Translate the block title with the i18n API, which uses the strings in the locale files
-      title={i18n.translate("name")}
-    >
+    <>
       <Heading
         size="3"
       >
@@ -250,6 +250,15 @@ function App() {
           </>
         )}
       </Form>
+    </>
+  );
+  return (
+    <AdminBlock
+      // Translate the block title with the i18n API, which uses the strings in the locale files
+      title={i18n.translate("name")}
+      collapsedSummary={!shouldRender ? "Not enough product variants" : null}
+    >
+      {shouldRender ? blockMarkup : null}
     </AdminBlock>
   );
 }
