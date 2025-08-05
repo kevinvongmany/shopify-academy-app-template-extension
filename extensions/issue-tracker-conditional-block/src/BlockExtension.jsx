@@ -30,18 +30,18 @@ function App() {
   const productId = data.selected[0].id;
   const issuesCount = issues.length;
   const totalPages = issuesCount / PAGE_SIZE;
-  
+
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [shouldRender, setShouldRender] = useState(false);  
+  const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
     (async function getProductInfo() {
       const productData = await getIssues(productId);
 
       setLoading(false);
-      
+
       if (productData?.data?.product?.variants?.edges.length > 1) {
         setShouldRender(true);
       }
