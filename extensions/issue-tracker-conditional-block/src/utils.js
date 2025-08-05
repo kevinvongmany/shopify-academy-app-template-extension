@@ -1,3 +1,7 @@
+export async function getProductVariants(data) {
+  return null;
+}
+
 export async function updateIssues(id, newIssues) {
   // This example uses metafields to store the data. For more information, refer to https://shopify.dev/docs/apps/custom-data/metafields.
   return await makeGraphQLQuery(
