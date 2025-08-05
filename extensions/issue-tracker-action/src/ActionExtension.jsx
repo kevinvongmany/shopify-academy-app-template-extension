@@ -6,7 +6,11 @@ import {
   AdminAction,
   Button,
   TextArea,
-  Box,
+  BlockStack,
+  Text,
+  ProgressIndicator,
+  InlineStack,
+  Banner
 } from "@shopify/ui-extensions-react/admin";
 import { getIssues, updateIssues } from "./utils";
 
@@ -36,6 +40,7 @@ function App() {
     ? new URL(intents.launchUrl)?.searchParams.get("issueId")
     : null;
   const [loading, setLoading] = useState(issueId ? true : false);
+  const [loadingRecommended, setLoadingRecommended] = useState(false);
   const [issue, setIssue] = useState({ title: "", description: "" });
   const [allIssues, setAllIssues] = useState([]);
   const [formErrors, setFormErrors] = useState(null);
@@ -46,6 +51,24 @@ function App() {
     getIssues(data.selected[0].id).then(issues => setAllIssues(issues || []));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const getIssueRecommendation = useCallback(async () => {
+    // get a recommended issue title & description from backend
+    setLoadingRecommended(true);
+    const res = await fetch(
+      `api/recommendedProductIssue?productId=${data.selected[0].id}`,
+    );
+    setLoadingRecommended(false);
+
+    if (!res.ok) {
+      console.error("Error occurred (perhaps network?)");
+    }
+    const json = await res.json();
+    if (json?.productIssue) {
+      setIssue(json?.productIssue);
+    }
+
+  }, [data.selected]);
 
   const onSubmit = useCallback(async () => {
     const { isValid, errors } = validateForm(issue);
@@ -82,7 +105,7 @@ function App() {
   useEffect(() => {
     if (issueId) {
       // handle if opened from rendered block extension
-      const editingIssue = allIssues.find(({ id }) => `${id}`=== issueId);
+      const editingIssue = allIssues.find(({ id }) => `${id}` === issueId);
       if (editingIssue) {
         setIssue(editingIssue);
       }
@@ -91,20 +114,34 @@ function App() {
 
   return (
     <AdminAction
-      title={ isEditing ? "Edit issue" : "Create issue" }
+      title={isEditing ? "Edit issue" : "Create issue"}
       primaryAction={
-        <Button onPress={onSubmit}>{ isEditing ? "Save" : "Create" }</Button>
+        <Button onPress={onSubmit}>{isEditing ? "Save" : "Create"}</Button>
       }
       secondaryAction={<Button onPress={close}>Cancel</Button>}
     >
-      <TextField
-        value={title}
-        error={formErrors?.title ? "Please enter a title" : undefined}
-        onChange={(val) => setIssue((prev) => ({ ...prev, title: val }))}
-        label="Title"
-        maxLength={50}
-      />
-      <Box paddingBlockStart="large">
+      <BlockStack gap="base">
+        <Banner>
+          <BlockStack gap="base">
+            <Text>Automatically fill issue based on past customer feedback</Text>
+            <InlineStack blockAlignment="center" gap="base">
+              <Button
+                onPress={getIssueRecommendation}
+                disabled={loadingRecommended}
+              >
+                Generate issue
+              </Button>
+              {loadingRecommended && <ProgressIndicator size="small-100" />}
+            </InlineStack>
+          </BlockStack>
+        </Banner>
+        <TextField
+          value={title}
+          error={formErrors?.title ? "Please enter a title" : undefined}
+          onChange={(val) => setIssue((prev) => ({ ...prev, title: val }))}
+          label="Title"
+          maxLength={50}
+        />
         <TextArea
           value={description}
           error={
@@ -116,7 +153,7 @@ function App() {
           label="Description"
           maxLength={300}
         />
-      </Box>
+      </BlockStack>
     </AdminAction>
   );
 }
