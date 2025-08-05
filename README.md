@@ -160,6 +160,12 @@ Using pnpm:
 pnpm run build
 ```
 
+Using bun:
+
+```shell
+bun run build
+```
+
 ## Hosting
 
 When you're ready to set up your app in production, you can follow [our deployment documentation](https://shopify.dev/docs/apps/deployment/web) to host your app on a cloud provider like [Heroku](https://www.heroku.com/) or [Fly.io](https://fly.io/).
@@ -243,6 +249,12 @@ Using pnpm:
 
 ```shell
 pnpm run deploy
+```
+
+Using bun:
+
+```shell
+bun run deploy
 ```
 
 ### My shop-specific webhook subscriptions aren't updated
