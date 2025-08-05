@@ -4,7 +4,7 @@ This repository is a follow-along exercise from [Shopify Academy](https://www.sh
 
 This code was built using [bun (v1.2.19)](https://bun.com/) and using [Node (v18.20.8)](https://nodejs.org/en/download) installed via [nvm 1.2.2](https://github.com/nvm-sh/nvm).
 
-The below README is mostly generated from running the steps in [Quick start](#installing-the-template).
+The below README is mostly generated from running the steps in [Quick start](#quick-start).
 
 # Shopify App Template - Remix
 
