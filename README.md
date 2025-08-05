@@ -83,6 +83,8 @@ Using pnpm:
 pnpm run dev
 ```
 
+Using bun:
+
 ```shell
 bun run dev
 ```
