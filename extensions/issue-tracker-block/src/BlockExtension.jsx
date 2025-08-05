@@ -157,7 +157,21 @@ function App() {
                           />
                         </Box>
                         <Box inlineSize="25%">
-                          <InlineStack inlineSize="100%" inlineAlignment="end">
+                          <InlineStack 
+                            inlineSize="100%" 
+                            inlineAlignment="end"
+                            gap="base"
+                          >
+                            <Button
+                              variant="tertiary"
+                              onPress={() =>
+                                navigation?.navigate(
+                                  `extension:issue-tracker-action?issueId=${id}`
+                                )
+                              }
+                            >
+                              <Icon name="EditMinor" />
+                            </Button>
                             <Button
                               onPress={() => handleDelete(id)}
                               variant="tertiary"
