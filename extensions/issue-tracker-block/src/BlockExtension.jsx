@@ -23,7 +23,7 @@ export default reactExtension(TARGET, () => <App />);
 const PAGE_SIZE = 3;
 
 function App() {
-  const { data, i18n } = useApi(TARGET);
+  const { navigation, data, i18n } = useApi(TARGET);
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState([]);
   const [issues, setIssues] = useState([]);
