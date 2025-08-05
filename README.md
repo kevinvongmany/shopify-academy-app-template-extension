@@ -51,6 +51,7 @@ pnpm create @shopify/app@latest
 ```
 
 Using bun:
+
 ```shell
 bun i @shopify/app@latest
 bun install @shopify/app@latest
