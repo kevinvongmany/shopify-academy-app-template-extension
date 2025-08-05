@@ -72,10 +72,10 @@ function App() {
           description,
           completed: false,
         });
-        await updateIssues(data.selected[0].id, newIssues);
-        // Close the modal using the 'close' API
-        close();
       }
+      await updateIssues(data.selected[0].id, newIssues);
+      // Close the modal using the 'close' API
+      close();
     }
   }, [issue, allIssues, isEditing, data.selected, close, title, description]);
 
@@ -91,9 +91,9 @@ function App() {
 
   return (
     <AdminAction
-      title="Create an issue"
+      title={ isEditing ? "Edit issue" : "Create issue" }
       primaryAction={
-        <Button onPress={onSubmit}>Create</Button>
+        <Button onPress={onSubmit}>{ isEditing ? "Save" : "Create" }</Button>
       }
       secondaryAction={<Button onPress={close}>Cancel</Button>}
     >
